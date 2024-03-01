@@ -100,6 +100,9 @@ class CMEMS_Downloader(object):
         feature_lats_centroid = [row[0] for row in cursor]
         feature_lat = np.mean(feature_lats_centroid)
 
+        # Delete the fields created
+        arcpy.management.DeleteField(in_features, ["lon_cent", "lat_cent"])
+
         # === PERFORM THE DOWNLOAD AND THE PROCESSING ===
         for data_type, databool in {"Waves":in_wave_data, "Sea Level":in_sealevel_data}.items():
             if databool:
