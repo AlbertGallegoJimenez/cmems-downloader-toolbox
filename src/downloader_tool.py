@@ -48,7 +48,7 @@ class CMEMS_Downloader(object):
         
         # Input Features parameter
         in_features = arcpy.Parameter(
-            displayName="Input Feature from which the nearest CMEMS data will be downloaded",
+            displayName="Input Feature Class from which the nearest CMEMS data will be downloaded",
             name="in_features",
             datatype="GPFeatureLayer",
             parameterType="Required",
