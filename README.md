@@ -18,7 +18,7 @@
 2. Open ArcGIS Pro.
 3. Navigate to the ArcGIS Pro "Catalog" pane.
 4. Right-click on "Toolboxes" and select "Add Toolbox".
-5. Browse to the location where you saved the downloaded toolbox file (*CMEMS_Downloader.pyt*) and click "OK".
+5. Browse to the location where you saved the downloaded toolbox file (*CMEMS Downloader Toolbox.pyt*) and click "OK".
 
 <!-- REQUIREMENTS -->
 ## Requirements
