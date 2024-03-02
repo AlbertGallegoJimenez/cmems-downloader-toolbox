@@ -35,7 +35,7 @@ class CMEMS_Downloader(object):
             displayName="Download WAVE data",
             name="in_waves_data",
             datatype="GPBoolean",
-            parameterType="Required",
+            parameterType="Optional",
             direction="Input")
         
         # Input sealevel data parameter
@@ -43,7 +43,7 @@ class CMEMS_Downloader(object):
             displayName="Download SEA LEVEL data",
             name="in_sealevel_data",
             datatype="GPBoolean",
-            parameterType="Required",
+            parameterType="Optional",
             direction="Input")
         
         # Input Features parameter
@@ -91,27 +91,27 @@ class CMEMS_Downloader(object):
         arcpy.management.CalculateField(in_features, "lon_cent", "!SHAPE.CENTROID.X!")
         cursor = arcpy.da.SearchCursor(in_features, ["lon_cent"])
         feature_lons_centroid = [row[0] for row in cursor]
-        feature_lon = np.mean(feature_lons_centroid)
+        feature_lon_utm = np.mean(feature_lons_centroid)
         
         # Calculate the latitude centroid of each feature
         arcpy.management.AddField(in_features, "lat_cent", "DOUBLE")
         arcpy.management.CalculateField(in_features, "lat_cent", "!SHAPE.CENTROID.Y!")
         cursor = arcpy.da.SearchCursor(in_features, ["lat_cent"])
         feature_lats_centroid = [row[0] for row in cursor]
-        feature_lat = np.mean(feature_lats_centroid)
+        feature_lat_utm = np.mean(feature_lats_centroid)
 
         # Delete the fields created
         arcpy.management.DeleteField(in_features, ["lon_cent", "lat_cent"])
 
         # === PERFORM THE DOWNLOAD AND THE PROCESSING ===
         for data_type, databool in {"Waves":in_wave_data, "Sea Level":in_sealevel_data}.items():
-            if databool:
+            if databool == "true":
                 arcpy.AddMessage("Downlading {} ...".format(data_type))
                 # === DOWNLOAD THE DATA ===
                 # Initialize the DataDownloader object
                 downloader = DataDownloader(in_username, in_password, data_type)
                 # Get the values of longitude and latitude in GCS
-                feature_lon_gcs, feature_lat_gcs = downloader.reproject_UTM_to_GCS(feature_lon, feature_lat, fc_epsg)
+                feature_lon_gcs, feature_lat_gcs = downloader.reproject_UTM_to_GCS(feature_lon_utm, feature_lat_utm, fc_epsg)
                 # Download the data and save it to a NetCDF file
                 downloader.download_data(feature_lon_gcs, feature_lat_gcs)
                 
@@ -129,10 +129,11 @@ class CMEMS_Downloader(object):
                 ds_processor = DatasetProcessor(ds, cmems_GCS_EPSG, UTM_EPSG)
                 ds = ds_processor.reproject_GCS_to_UTM()
                 # Find valid points based on a variable in the dataset
-                ds_selected = ds_processor.find_valid_points(variable, feature_lon, feature_lat)
+                ds_selected = ds_processor.find_valid_points(variable, feature_lon_utm, feature_lat_utm)
                 # Rewrite the dataset to the output file
                 ds_selected.to_netcdf(os.path.join(out_dir, out_filename))
-        arcpy.AddMessage("Data downloaded in {} .".format(out_filename))
+                
+                arcpy.AddMessage("Data downloaded in {} .".format(out_filename))
         return
 
     def postExecute(self, parameters):
