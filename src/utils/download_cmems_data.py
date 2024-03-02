@@ -35,7 +35,7 @@ class DataDownloader():
             self.variables = ["VHM0", "VTPK", "VMDR"] # Significant wave height, Peak period, Wave direction
         elif data_type == "Sea Level":
             self.cmems_dataset_id = "cmems_mod_ibi_phy_my_0.083deg-2D_PT1H-m"
-            self.cmems_data_GCS_EPSG = 32662
+            self.cmems_data_GCS_EPSG = 4326 # Changed to 4326 since the original EPSG code (i.e. 32662) gives an error
             self.output_filename = "CMEMS_SeaLevel.nc"
             self.variables = ["zos"]
             
@@ -131,12 +131,12 @@ class DatasetProcessor():
 
         return self.ds_UTM
     
-    def find_valid_points(self, variable:str, feature_lon:float, feature_lat:float):
+    def find_valid_points(self, variables:str, feature_lon:float, feature_lat:float):
         """
         Find the nearest valid point in the dataset for a given feature.
 
         Args:
-            variable (str): Variable for which the valid point is to be found.
+            variables (list): Variables for which the valid point is to be found.
             feature_lon (float): Longitude of the feature in UTM coordinates.
             feature_lat (float): Latitude of the feature in UTM coordinates.
 
@@ -161,7 +161,32 @@ class DatasetProcessor():
                                         latitude=idx_point[1])
             
             # Keep the data if there are not many nan values (i.e. > 90% of the data is valid)
-            if np.count_nonzero(~np.isnan(ds_selection[variable])) / len(ds_selection[variable]) > 0.9:
+            if self._check_all_variables(variables, ds_selection):
                 break
-
+            
         return ds_selection
+    
+    def _check_all_variables(self, variables:list, ds:xr.Dataset) -> bool:
+        """
+        Verifies the validity of all variables in the dataset.
+        
+        Parameters:
+        - variables (list): List of variable names to be checked.
+        - ds (xr.Dataset): xarray Dataset object containing the variables.
+        
+        Returns:
+        - bool: True if all variables are valid, False otherwise.
+        """
+        flags = []
+        
+        # Iterating over each variable to check its validity
+        for var in variables:
+            valid_ratio = np.count_nonzero(~np.isnan(ds[var])) / len(ds[var])
+            # Checking if the ratio of non-NaN values is greater than 90%
+            if valid_ratio > 0.9:
+                flags.append(True)
+            else:
+                flags.append(False)
+        
+        # Checking if all flags are True, indicating all variables are valid
+        return all(flags)

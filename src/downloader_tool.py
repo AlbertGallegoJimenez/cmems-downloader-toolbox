@@ -80,7 +80,7 @@ class CMEMS_Downloader(object):
         in_username = parameters[0].valueAsText
         in_password = parameters[1].valueAsText
         in_wave_data = parameters[2].valueAsText
-        in_sealevel_data = parameters[2].valueAsText
+        in_sealevel_data = parameters[3].valueAsText
         in_features = parameters[4].valueAsText
         
         # Get feature class EPSG
@@ -117,7 +117,7 @@ class CMEMS_Downloader(object):
                 
                 # === PROCESS THE DATASET ===
                 # Get parameters from the downloader object
-                variable = downloader.variables[0]
+                variables = downloader.variables
                 out_dir = downloader.out_dir
                 out_filename = downloader.output_filename
                 cmems_GCS_EPSG = downloader.cmems_data_GCS_EPSG
@@ -129,11 +129,12 @@ class CMEMS_Downloader(object):
                 ds_processor = DatasetProcessor(ds, cmems_GCS_EPSG, UTM_EPSG)
                 ds = ds_processor.reproject_GCS_to_UTM()
                 # Find valid points based on a variable in the dataset
-                ds_selected = ds_processor.find_valid_points(variable, feature_lon_utm, feature_lat_utm)
+                ds_selected = ds_processor.find_valid_points(variables, feature_lon_utm, feature_lat_utm)
                 # Rewrite the dataset to the output file
                 ds_selected.to_netcdf(os.path.join(out_dir, out_filename))
                 
-                arcpy.AddMessage("Data downloaded in {} .".format(out_filename))
+                arcpy.AddMessage("Data downloaded in {}".format(out_dir))
+                del downloader, ds_processor, ds, ds_selected
         return
 
     def postExecute(self, parameters):
