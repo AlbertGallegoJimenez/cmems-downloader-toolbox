@@ -5,7 +5,7 @@
 
 <!-- FEATURES -->
 ## Features
-- **Download Marine Data**: Download wave data or sea level data from the Copernicus Marine Service based on the location of the input feature class.
+- **Download Marine Data**: Download wave data or sea level data from the Copernicus Marine Service based on the location of the input Feature Class.
 - **Automatic Data Processing**: Automatically process downloaded marine data, i.e. find the nearest valid node.
 - **User-friendly Interface**: Intuitive toolbox interface within ArcGIS Pro.
 
