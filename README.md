@@ -38,7 +38,7 @@
 1. Double-click to open the "CMEMS Downloader Tool" tool.
 2. Input your CMEMS username and password.
 3. Select the type of data you want to download (Waves, Sea Level).
-4. Choose the feature class from which the nearest CMEMS data will be downloaded.
+4. Choose the Feature Class from which the nearest CMEMS data will be downloaded.
 5. Click "Run".
 
 <div align="center">
