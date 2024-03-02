@@ -43,9 +43,11 @@
 
 <div align="center">
   <a href="https://github.com/AlbertGallegoJimenez/cmems-downloader-toolbox">
-    <img src="images/tool-screenshot.png" alt="screenshot tool" width="50%>
+    <img src="images/tool-screenshot.png" alt="screenshot tool" width="75%">
   </a>
+</div>
 
+     
 <!-- CONTACT -->
 ## Contact
 
