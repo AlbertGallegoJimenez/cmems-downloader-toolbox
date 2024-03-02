@@ -33,11 +33,24 @@
 > [!WARNING]
 > Note that you must clone the ArcGIS Pro default environment to install new libraries in the Anaconda environment.
 
+<!-- USAGE -->
+## Usage
+1. Double-click to open the "CMEMS Downloader Tool" tool.
+2. Input your CMEMS username and password.
+3. Select the type of data you want to download (Waves, Sea Level).
+4. Choose the feature class from which the nearest CMEMS data will be downloaded.
+5. Click "Run".
+
+<div align="center">
+  <a href="https://github.com/AlbertGallegoJimenez/cmems-downloader-toolbox">
+    <img src="images/tool-screenshot.png" alt="screenshot tool" width="50%>
+  </a>
+
 <!-- CONTACT -->
 ## Contact
 
 Albert Gallego Jiménez - [LinkedIn](https://www.linkedin.com/in/albert-gallego-jimenez) - agalleji8@gmail.com
 
-Project Link: [https://github.com/AlbertGallegoJimenez/shoreline-evolution-tool](https://github.com/AlbertGallegoJimenez/shoreline-evolution-tool)
+Project Link: [https://github.com/AlbertGallegoJimenez/cmems-downloader-toolbox](https://github.com/AlbertGallegoJimenez/cmems-downloader-toolbox)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

@@ -7,7 +7,7 @@ from utils.download_cmems_data import DataDownloader, DatasetProcessor
 class CMEMS_Downloader(object):
     def __init__(self):
         """Define the tool (tool name is the name of the class)."""
-        self.label = "CMEMS Downloader Toolbox"
+        self.label = "CMEMS Downloader Tool"
         self.description = "The CMEMS Downloader Toolbox is an ArcGIS Python toolbox that enables automatic" \
             "retrieval of marine data from the Copernicus Marine Service using a simple Feature Class input."
         self.canRunInBackground = False
