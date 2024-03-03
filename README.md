@@ -11,8 +11,8 @@
 
 <!-- FEATURES -->
 ## Features
-- **Download Marine Data**: Download wave data or sea level data from the Copernicus Marine Service based on the input feature's location.
-- **Automatic Data Processing**: Automatically process the downloaded marine data, including reprojection and finding valid points.
+- **Download Marine Data**: Download wave data or sea level data from the Copernicus Marine Service based on the location of the input Feature Class.
+- **Automatic Data Processing**: Automatically process downloaded marine data, i.e. find the nearest valid node.
 - **User-friendly Interface**: Intuitive toolbox interface within ArcGIS Pro.
 
 > [!IMPORTANT]
@@ -24,7 +24,7 @@
 2. Open ArcGIS Pro.
 3. Navigate to the ArcGIS Pro "Catalog" pane.
 4. Right-click on "Toolboxes" and select "Add Toolbox".
-5. Browse to the location where you saved the downloaded toolbox file (*CMEMS_Downloader.pyt*) and click "OK".
+5. Browse to the location where you saved the downloaded toolbox file (*CMEMS Downloader Toolbox.pyt*) and click "OK".
 
 <!-- REQUIREMENTS -->
 ## Requirements
@@ -44,7 +44,7 @@
 1. Double-click to open the "CMEMS Downloader Tool" tool.
 2. Input your CMEMS username and password.
 3. Select the type of data you want to download (Waves, Sea Level).
-4. Choose the feature class from which the nearest CMEMS data will be downloaded.
+4. Choose the Feature Class from which the nearest CMEMS data will be downloaded.
 5. Click "Run".
 
 <div align="center">
