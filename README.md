@@ -5,7 +5,7 @@
 
  <div align="center">
   <a href="https://github.com/AlbertGallegoJimenez/cmems-downloader-toolbox">
-    <img src="images/toolbox-diagram.png" alt="diagram tool" width="50%">
+    <img src="images/toolbox-diagram.png" alt="diagram tool" width="90%">
   </a>
 </div>
 
