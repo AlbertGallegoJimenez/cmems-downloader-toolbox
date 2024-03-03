@@ -3,6 +3,12 @@
 
  The CMEMS Downloader Toolbox is an ArcGIS Python Toolbox that enables automatic retrieval of marine data from the Copernicus Marine Service using a simple Feature Class input.
 
+ <div align="center">
+  <a href="https://github.com/AlbertGallegoJimenez/cmems-downloader-toolbox">
+    <img src="images/toolbox-diagram.png" alt="diagram tool" width="50%">
+  </a>
+</div>
+
 <!-- FEATURES -->
 ## Features
 - **Download Marine Data**: Download wave data or sea level data from the Copernicus Marine Service based on the input feature's location.
