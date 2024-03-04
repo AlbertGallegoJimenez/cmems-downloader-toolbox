@@ -123,7 +123,7 @@ class CMEMS_Downloader(object):
                 cmems_GCS_EPSG = downloader.cmems_data_GCS_EPSG
                 
                 # Open the output file as a Xarray Dataset
-                UTM_EPSG = arcpy.Describe('TORDERA_Transects').SpatialReference.factorycode
+                UTM_EPSG = arcpy.Describe(in_features).SpatialReference.factorycode
                 ds = xr.open_dataset(os.path.join(out_dir, out_filename))
                 # Initialize the DatasetProcessor object
                 ds_processor = DatasetProcessor(ds, cmems_GCS_EPSG, UTM_EPSG)
