@@ -16,7 +16,7 @@
 - **User-friendly Interface**: Intuitive toolbox interface within ArcGIS Pro.
 
 > [!IMPORTANT]
-> **Attention:** This repository is intended exclusively for downloading wave and sea level data for the Iberian Peninsula. To customize the tool for other regions, please access the source code and modify the dataset IDs to be downloaded accordingly.
+> **Attention:** This repository is intended exclusively for downloading wave and sea level data for the European Atlantic facade (the Iberia-Biscay-Ireland zone). To customize the tool for other regions, please access the source code and modify the dataset IDs to be downloaded accordingly.
 
 <!-- INSTALLATION -->
 ## Installation
