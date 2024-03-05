@@ -105,11 +105,13 @@ class DatasetProcessor():
         """
         Initialize DatasetProcessor with dataset and projection details.
         """
-
         self.ds = ds.copy(deep=True)
-        self.ds_UTM = ds.copy(deep=True)
         self.GCS_proj_EPSG = GCS_proj_EPSG
         self.UTM_proj_EPSG = UTM_proj_EPSG
+        
+        # Check if the longitude and latitude have different dimensions
+        self._check_and_process_dimensions()
+        self.ds_UTM = self.ds.copy(deep=True)
         
     def reproject_GCS_to_UTM(self):
         """
@@ -128,7 +130,7 @@ class DatasetProcessor():
         # Update the coordinate reference system of the dataset
         self.ds_UTM = self.ds_UTM.assign_coords({'longitude': self.ds_UTM['longitude'],
                                                  'latitude': self.ds_UTM['latitude']})
-
+        
         return self.ds_UTM
     
     def find_valid_points(self, variables:str, feature_lon:float, feature_lat:float):
@@ -165,10 +167,22 @@ class DatasetProcessor():
                 break
             
         return ds_selection
-    
+
+    def _check_and_process_dimensions(self):
+        """
+        Private method that checks that longitude and latitude have the same dimensions. If not, the Dataset is cropped to the minimum common dimensions.
+        This is necessary for the reprojecting process as there is a bug when the dimensions are not the same.       
+        """
+        min_dim = min(self.ds['longitude'].size, self.ds['latitude'].size)
+        
+        if min_dim < self.ds['longitude'].size:
+            self.ds = self.ds.isel(longitude=slice(None, min_dim))
+        elif min_dim < self.ds['latitude'].size:
+            self.ds = self.ds.isel(latitude=slice(None, min_dim))
+
     def _check_all_variables(self, variables:list, ds:xr.Dataset) -> bool:
         """
-        Verifies the validity of all variables in the dataset.
+        Private method that verifies the validity of all variables in the dataset.
         
         Parameters:
         - variables (list): List of variable names to be checked.
