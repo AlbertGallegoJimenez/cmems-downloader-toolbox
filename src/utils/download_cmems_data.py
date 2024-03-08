@@ -3,7 +3,8 @@ import pyproj
 import numpy as np
 import os
 import arcpy
-import copernicus_marine_client as copernicusmarine
+import asyncio
+import copernicusmarine
 
 class DataDownloader():
     """
@@ -63,7 +64,7 @@ class DataDownloader():
 
         return proj_transformer.transform(utm_feature_lon, utm_feature_lat)
         
-    def download_data(self, gcs_feature_lon:float, gcs_feature_lat:float):
+    async def download_data(self, gcs_feature_lon:float, gcs_feature_lat:float):
         """
         Download marine data from Copernicus Marine Service.
 

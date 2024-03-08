@@ -2,6 +2,7 @@ import arcpy
 import os
 import numpy as np
 import xarray as xr
+import asyncio
 from utils.download_cmems_data import DataDownloader, DatasetProcessor
 
 class CMEMS_Downloader(object):
@@ -112,8 +113,16 @@ class CMEMS_Downloader(object):
                 downloader = DataDownloader(in_username, in_password, data_type)
                 # Get the values of longitude and latitude in GCS
                 feature_lon_gcs, feature_lat_gcs = downloader.reproject_UTM_to_GCS(feature_lon_utm, feature_lat_utm, fc_epsg)
-                # Download the data and save it to a NetCDF file
-                downloader.download_data(feature_lon_gcs, feature_lat_gcs)
+                # Download the data and save it to a NetCDF file                
+                # Check if there is a current event loop running
+                try:
+                    loop = asyncio.get_event_loop()
+                    if not loop.is_running():
+                        self.setup_event_loop()
+                except RuntimeError:
+                    self.setup_event_loop()
+                loop = asyncio.get_event_loop()
+                loop.run_until_complete(downloader.download_data(feature_lon_gcs, feature_lat_gcs))
                 
                 # === PROCESS THE DATASET ===
                 # Get parameters from the downloader object
@@ -141,3 +150,8 @@ class CMEMS_Downloader(object):
         """This method takes place after outputs are processed and
         added to the display."""
         return
+    
+    def setup_event_loop(self):
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+    
