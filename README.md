@@ -34,7 +34,7 @@
 - ```pyproj```
 - ```numpy```
 - ```arcpy (ArcGIS Python module)```
-- ```copernicus_marine_client```
+- ```copernicusmarine```
 
 > [!WARNING]
 > Note that you must clone the ArcGIS Pro default environment to install new libraries in the Anaconda environment.
