@@ -4,6 +4,7 @@ import numpy as np
 import os
 import arcpy
 import asyncio
+from datetime import datetime
 import copernicusmarine
 
 class DataDownloader():
@@ -25,21 +26,22 @@ class DataDownloader():
         """
         Initialize DataDownloader with username, password, and data type.
         """
-
+        # Set the username, password, and data type
         self.username = username
         self.password = password
         
         if data_type == "Waves":
-            self.cmems_dataset_id = "cmems_mod_ibi_wav_my_0.027deg_PT1H-i"
+            self.cmems_dataset_id = "cmems_mod_ibi_wav_anfc_0.027deg_PT1H-i"
             self.cmems_data_GCS_EPSG = 4326
-            self.output_filename = "CMEMS_Waves.nc"
+            self.output_filename = f"CMEMS_Waves_{datetime.now().strftime('%Y%m%d%H%S')}.nc"
             self.variables = ["VHM0", "VTPK", "VMDR"] # Significant wave height, Peak period, Wave direction
         elif data_type == "Sea Level":
-            self.cmems_dataset_id = "cmems_mod_ibi_phy_my_0.083deg-2D_PT1H-m"
+            self.cmems_dataset_id = "cmems_mod_ibi_phy_anfc_0.027deg-2D_PT1H-m"
             self.cmems_data_GCS_EPSG = 4326 # Changed to 4326 since the original EPSG code (i.e. 32662) gives an error
-            self.output_filename = "CMEMS_SeaLevel.nc"
+            self.output_filename = f"CMEMS_Sea_Level_{datetime.now().strftime('%Y%m%d%H%S')}.nc"
             self.variables = ["zos"]
-            
+        
+        # Get the output folder directory
         aprx = arcpy.mp.ArcGISProject('CURRENT')
         self.out_dir = os.path.join(aprx.homeFolder, "met-ocean data")
         if not os.path.exists(self.out_dir):
@@ -64,7 +66,7 @@ class DataDownloader():
 
         return proj_transformer.transform(utm_feature_lon, utm_feature_lat)
         
-    async def download_data(self, gcs_feature_lon:float, gcs_feature_lat:float):
+    async def get_data(self, gcs_feature_lon:float, gcs_feature_lat:float):
         """
         Download marine data from Copernicus Marine Service.
 
@@ -72,22 +74,22 @@ class DataDownloader():
             gcs_feature_lon (float): Longitude of the feature in GCS coordinates.
             gcs_feature_lat (float): Latitude of the feature in GCS coordinates.
         """
-        copernicusmarine.subset(
+        self.ds = copernicusmarine.open_dataset(
             dataset_id=self.cmems_dataset_id,
             username=self.username,
             password=self.password,
             variables=self.variables,
-            minimum_longitude=gcs_feature_lon-0.1,
-            maximum_longitude=gcs_feature_lon+0.1,
-            minimum_latitude=gcs_feature_lat-0.1,
-            maximum_latitude=gcs_feature_lat+0.1,
+            minimum_longitude=gcs_feature_lon - 0.1,
+            maximum_longitude=gcs_feature_lon + 0.1,
+            minimum_latitude=gcs_feature_lat - 0.1,
+            maximum_latitude=gcs_feature_lat + 0.1,
             start_datetime="1993-01-01T00:00:00",
             end_datetime="2023-01-31T23:59:59",
             minimum_depth=0,
             maximum_depth=0.5,
-            output_filename=self.output_filename,
-            output_directory=self.out_dir,
-            force_download=True
+            #output_filename=self.output_filename,
+            #output_directory=self.out_dir,
+            #force_download=True
             )
     
 

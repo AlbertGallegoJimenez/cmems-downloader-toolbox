@@ -122,7 +122,7 @@ class CMEMS_Downloader(object):
                 except RuntimeError:
                     self.setup_event_loop()
                 loop = asyncio.get_event_loop()
-                loop.run_until_complete(downloader.download_data(feature_lon_gcs, feature_lat_gcs))
+                loop.run_until_complete(downloader.get_data(feature_lon_gcs, feature_lat_gcs))
                 
                 # === PROCESS THE DATASET ===
                 # Get parameters from the downloader object
@@ -133,9 +133,8 @@ class CMEMS_Downloader(object):
                 
                 # Open the output file as a Xarray Dataset
                 UTM_EPSG = arcpy.Describe(in_features).SpatialReference.factorycode
-                ds = xr.open_dataset(os.path.join(out_dir, out_filename))
                 # Initialize the DatasetProcessor object
-                ds_processor = DatasetProcessor(ds, cmems_GCS_EPSG, UTM_EPSG)
+                ds_processor = DatasetProcessor(downloader.ds, cmems_GCS_EPSG, UTM_EPSG)
                 ds = ds_processor.reproject_GCS_to_UTM()
                 # Find valid points based on a variable in the dataset
                 ds_selected = ds_processor.find_valid_points(variables, feature_lon_utm, feature_lat_utm)
