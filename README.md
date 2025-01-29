@@ -26,16 +26,6 @@
 4. Right-click on "Toolboxes" and select "Add Toolbox".
 5. Browse to the location where you saved the downloaded toolbox file (*CMEMS Downloader Toolbox.pyt*) and click "OK".
 
-<!-- REQUIREMENTS -->
-## Requirements
-- ```ArcGIS Pro```
-- ```Python 3.x```
-- ```xarray```
-- ```pyproj```
-- ```numpy```
-- ```arcpy (ArcGIS Python module)```
-- ```copernicusmarine```
-
 > [!WARNING]
 > Note that you must clone the ArcGIS Pro default environment to install new libraries in the Anaconda environment.
 
